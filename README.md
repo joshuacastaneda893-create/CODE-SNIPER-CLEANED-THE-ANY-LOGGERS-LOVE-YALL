@@ -1,1 +1,749 @@
-# CODE-SNIPER-CLEANED-THE-ANY-LOGGERS-LOVE-YALL
+-- Safety-cleaned version: removed the empty-URL loadstring/HttpGet execution and notification-remote hooking.
+local _0x = getfenv and getfenv() or _G
+local _1x = _0x.print or print
+local _2x = _0x.table or table
+local _3x = _0x.math or math
+local _4x = _0x.string or string
+local _5x = _0x.wait or task.wait
+local _6x = _0x.delay or task.delay
+local _7x = _0x.TweenService or game:GetService("TweenService")
+local _8x = _0x.RunService or game:GetService("RunService")
+local _9x = _0x.UserInputService or game:GetService("UserInputService")
+local _10x = _0x.Players or game:GetService("Players")
+local _11x = _0x.ReplicatedStorage or game:GetService("ReplicatedStorage")
+local _12x = _0x.HttpService or game:GetService("HttpService")
+local _13x = _0x.cloneref or function(x) return x end
+
+local _A = _13x(_10x)
+local _B = _13x(_11x)
+local _C = _13x(_8x)
+local _D = _13x(_9x)
+local _E = _13x(_7x)
+local _F = _13x(_12x)
+
+local _G = {}
+_G.a = _A.LocalPlayer
+_G.b = _G.a:WaitForChild("PlayerGui")
+
+local _H = "levithon_code_redeemer_config.json"
+local _I = {a=true,b=true,c=3,d=false,e=false}
+
+pcall(function()
+    if type(isfile)=="function"and type(readfile)=="function"and isfile(_H)then
+        local _J=_F:JSONDecode(readfile(_H))
+        if type(_J)=="table"then
+            if type(_J.a)=="boolean"then _I.a=_J.a end
+            if type(_J.b)=="boolean"then _I.b=_J.b end
+            if type(_J.c)=="number"then _I.c=_3x.max(1,_3x.floor(_J.c))end
+            if type(_J.d)=="boolean"then _I.d=_J.d end
+            if type(_J.e)=="boolean"then _I.e=_J.e end
+        end
+    end
+end)
+
+local function _K()
+    if type(writefile)~="function"then return end
+    pcall(function()writefile(_H,_F:JSONEncode({a=_I.a,b=_I.b,c=_I.c,d=_I.d,e=_I.e}))end)
+end
+
+local _L={}
+_L.a=_I.a
+_L.b={}
+_L.c=nil
+_L.d=nil
+_L.e=_I.b
+_L.f=_I.c
+_L.g={}
+_L.h=nil
+_L.i=nil
+_L.j=nil
+_L.k={}
+_L.l=_I.d
+_L.m=_I.e
+_L.n=""
+_L.o=nil
+_L.p=nil
+_L.q=0
+_L.r=0
+_L.s=nil
+
+local _M=(debug and debug.getupvalues)or getupvalues
+local _N=getconnections or(debug and debug.getconnections)
+local _O=(debug and debug.setupvalue)or setupvalue
+
+local _P={}
+_P.a=nil
+_P.b=nil
+
+local function _Q(x)
+    local y=x
+    for i=1,10 do
+        if not y then break end
+        if y.Name=="LevithonCodeRedeemer"or y.Name=="SourcesHubRedeemerGui"then return true end
+        y=y.Parent
+    end
+    return false
+end
+
+local function _R(x)
+    local y=x
+    while y do
+        if y:IsA("GuiObject")and not y.Visible then return false end
+        if y:IsA("ScreenGui")then return y.Enabled end
+        y=y.Parent
+    end
+    return true
+end
+
+local function _S(pg)
+    local r={}
+    for _,g in ipairs(pg:GetChildren())do
+        if g:IsA("ScreenGui")and g.Enabled and not _Q(g)then
+            for _,d in ipairs(g:GetDescendants())do
+                if d:IsA("TextBox")and not _Q(d)then r[#r+1]=d end
+            end
+        end
+    end
+    return r
+end
+
+local function _T(pg)
+    local r={}
+    for _,g in ipairs(pg:GetChildren())do
+        if g:IsA("ScreenGui")and g.Enabled and not _Q(g)then
+            for _,d in ipairs(g:GetDescendants())do
+                if(d:IsA("TextButton")or d:IsA("ImageButton"))and not _Q(d)then
+                    local n=d.Name:lower()
+                    local pn=(d.Parent and d.Parent.Name or""):lower()
+                    if(n:find("code")or n:find("redeem")or pn:find("code")or pn:find("redeem"))and _R(d)then r[#r+1]=d end
+                end
+            end
+        end
+    end
+    return r
+end
+
+local function _U(b)
+    if not b then return false end
+    local m={}
+    m[#m+1]=function()b.MouseButton1Click:Fire()end
+    m[#m+1]=function()b.Activated:Fire()end
+    if typeof(firesignal)=="function"then
+        m[#m+1]=function()firesignal(b.MouseButton1Click)end
+        m[#m+1]=function()firesignal(b.Activated)end
+    end
+    if typeof(_N)=="function"then
+        m[#m+1]=function()
+            local ok,cs=pcall(_N,b.MouseButton1Click)
+            if ok and type(cs)=="table"then for _,c in ipairs(cs)do pcall(function()c:Fire()end)end end
+            local ok2,cs2=pcall(_N,b.Activated)
+            if ok2 and type(cs2)=="table"then for _,c in ipairs(cs2)do pcall(function()c:Fire()end)end end
+        end
+    end
+    if typeof(fireclick)=="function"then m[#m+1]=function()fireclick(b)end end
+    local any=false
+    for _,f in ipairs(m)do local ok=pcall(f)any=any or ok end
+    return any
+end
+
+local function _V(b)
+    if not b then return false end
+    local any=false
+    if typeof(firesignal)=="function"then local ok=pcall(firesignal,b.FocusLost,true)any=any or ok end
+    if typeof(_N)=="function"then
+        local ok,cs=pcall(_N,b.FocusLost)
+        if ok and type(cs)=="table"then
+            for _,c in ipairs(cs)do
+                local f
+                pcall(function()f=c.Function end)
+                if f and typeof(_M)=="function"and typeof(_O)=="function"then
+                    local uok,ups=pcall(_M,f)
+                    if uok and type(ups)=="table"then
+                        for i,v in pairs(ups)do
+                            if type(v)=="boolean"and v==true then pcall(_O,f,i,false)end
+                        end
+                    end
+                end
+                local fok=pcall(function()if c.Enabled~=false then c:Fire(true)end end)
+                any=any or fok
+            end
+        end
+    end
+    return any
+end
+
+local function _W(code)
+    local pg=_G.b or _G.a:FindFirstChildOfClass("PlayerGui")
+    if not pg then return false,"no PlayerGui"end
+    local cg=pg:FindFirstChild("Codes")
+    if cg then
+        if cg:IsA("ScreenGui")then cg.Enabled=true end
+        local cf=cg:FindFirstChild("Codes")or cg
+        if cf then
+            if cf:IsA("GuiObject")then cf.Visible=true end
+            local cur=cf
+            while cur and cur~=cg do if cur:IsA("GuiObject")then cur.Visible=true end cur=cur.Parent end
+            local box=nil
+            for _,d in ipairs(cf:GetDescendants())do if d:IsA("TextBox")and not _Q(d)then box=d break end end
+            local btn=nil
+            for _,d in ipairs(cf:GetDescendants())do
+                if(d:IsA("TextButton")or d:IsA("ImageButton"))and not _Q(d)then
+                    local n=d.Name:lower()
+                    local t=""
+                    pcall(function()t=d.Text:lower()end)
+                    if n:find("submit")or t:find("submit")or n:find("redeem")or t:find("redeem")or n:find("claim")or t:find("confirm")or n:find("enter")then btn=d break end
+                end
+            end
+            if not btn then
+                for _,d in ipairs(cf:GetDescendants())do
+                    if(d:IsA("TextButton")or d:IsA("ImageButton"))and not _Q(d)then
+                        local n=d.Name:lower()
+                        if not n:find("close")and not n:find("x")and not n:find("toggle")then btn=d break end
+                    end
+                end
+            end
+            if box then
+                pcall(function()box.Text=code end)
+                _5x(0.05)
+                if btn then _U(btn)end
+                _V(box)
+                return true,"submitted via PlayerGui.Codes"
+            end
+        end
+    end
+    local btns=_T(pg)
+    for _,b in ipairs(btns)do _U(b)_5x(0.05)end
+    _5x(0.2)
+    local box=nil
+    local dl=_3x.floor(os.clock()+2)
+    while os.clock()<dl do
+        local all=_S(pg)
+        for _,d in ipairs(all)do
+            if _R(d)then
+                local n=d.Name:lower()
+                local pn=(d.Parent and d.Parent.Name or""):lower()
+                if n:find("code")or pn:find("code")or n:find("redeem")or pn:find("redeem")or n:find("input")or pn:find("textbox")or n:find("enter")then box=d break end
+            end
+        end
+        if not box then for _,d in ipairs(all)do if _R(d)then box=d break end end end
+        if box then break end
+        _5x(0.1)
+    end
+    if not box then return false,"no codebox visible"end
+    pcall(function()box.Text=code end)
+    _5x(0.05)
+    local btn=nil
+    local names={"submit","redeem","claim","confirm","enter","send","apply","ok","use","go","check"}
+    local p=box.Parent
+    for i=1,8 do
+        if not p then break end
+        for _,d in ipairs(p:GetDescendants())do
+            if(d:IsA("TextButton")or d:IsA("ImageButton"))and not _Q(d)and d~=box then
+                local n=d.Name:lower()
+                local t=""
+                pcall(function()t=d.Text:lower()end)
+                for _,sn in ipairs(names)do
+                    if n:find(sn)or t:find(sn)then
+                        if _R(d)then btn=d break end
+                    end
+                end
+                if btn then break end
+            end
+        end
+        if btn then break end
+        p=p.Parent
+    end
+    if btn then _U(btn)end
+    _V(box)
+    return true,"submitted via dynamic search"
+end
+
+local function _X()
+    local pg=_G.b
+    local all=_S(pg)
+    for _,b in ipairs(all)do if _R(b)then return b end end
+    return nil
+end
+
+pcall(function()
+    for _,name in ipairs({"LevithonCodeRedeemer","ACECodeSniperUI","AutoTypeCodesUI"})do
+        local prev=game.CoreGui:FindFirstChild(name)
+        if prev then prev:Destroy()end
+    end
+end)
+
+for _,name in ipairs({"LevithonCodeRedeemer","ACECodeSniperUI","AutoTypeCodesUI"})do
+    local prev=_G.b:FindFirstChild(name)
+    if prev then prev:Destroy()end
+end
+
+local _Y=Instance.new("ScreenGui")
+_Y.Name="LevithonCodeRedeemer"
+_Y.ResetOnSpawn=false
+_Y.IgnoreGuiInset=true
+_Y.DisplayOrder=999
+if not pcall(function()_Y.Parent=game.CoreGui end)then _Y.Parent=_G.b end
+
+local _Z=Instance.new("Frame")
+_Z.Name="Window"
+_Z.Size=UDim2.fromOffset(280,360)
+_Z.Position=UDim2.fromOffset(100,100)
+_Z.BackgroundColor3=Color3.fromRGB(8,8,10)
+_Z.BorderSizePixel=0
+_Z.Active=true
+_Z.ClipsDescendants=true
+_Z.Parent=_Y
+
+local _aa=Instance.new("UICorner")
+_aa.CornerRadius=UDim.new(0,12)
+_aa.Parent=_Z
+
+local _ab=Instance.new("UIStroke")
+_ab.Color=Color3.fromRGB(255,255,255)
+_ab.Thickness=2
+_ab.Transparency=0.3
+_ab.Parent=_Z
+
+local _ac=Instance.new("UIGradient")
+_ac.Parent=_ab
+_ac.Rotation=0
+_ac.Color=ColorSequence.new({ColorSequenceKeypoint.new(0,Color3.fromRGB(255,255,255)),ColorSequenceKeypoint.new(0.25,Color3.fromRGB(0,0,0)),ColorSequenceKeypoint.new(0.5,Color3.fromRGB(255,255,255)),ColorSequenceKeypoint.new(0.75,Color3.fromRGB(0,0,0)),ColorSequenceKeypoint.new(1,Color3.fromRGB(255,255,255))})
+
+local _ad=Instance.new("Frame")
+_ad.Name="Header"
+_ad.Size=UDim2.new(1,0,0,40)
+_ad.BackgroundColor3=Color3.fromRGB(10,10,12)
+_ad.BorderSizePixel=0
+_ad.Active=true
+_ad.ZIndex=2
+_ad.Parent=_Z
+
+local _ae=Instance.new("UICorner")
+_ae.CornerRadius=UDim.new(0,12)
+_ae.Parent=_ad
+
+local _af=Instance.new("UIStroke")
+_af.Color=Color3.fromRGB(255,255,255)
+_af.Thickness=2
+_af.Transparency=0.2
+_af.Parent=_ad
+
+local _ag=Instance.new("UIGradient")
+_ag.Parent=_af
+_ag.Rotation=0
+_ag.Color=ColorSequence.new({ColorSequenceKeypoint.new(0,Color3.fromRGB(255,255,255)),ColorSequenceKeypoint.new(0.25,Color3.fromRGB(0,0,0)),ColorSequenceKeypoint.new(0.5,Color3.fromRGB(255,255,255)),ColorSequenceKeypoint.new(0.75,Color3.fromRGB(0,0,0)),ColorSequenceKeypoint.new(1,Color3.fromRGB(255,255,255))})
+
+local _ah=Instance.new("TextLabel")
+_ah.Size=UDim2.new(1,0,1,0)
+_ah.BackgroundTransparency=1
+_ah.Text="Levithon Code Redeemer"
+_ah.TextSize=15
+_ah.TextColor3=Color3.fromRGB(255,255,255)
+_ah.Font=Enum.Font.GothamBold
+_ah.TextXAlignment=Enum.TextXAlignment.Center
+_ah.TextYAlignment=Enum.TextYAlignment.Center
+_ah.ZIndex=3
+_ah.Parent=_ad
+
+local _ai=Instance.new("Frame")
+_ai.Size=UDim2.new(1,-16,0,180)
+_ai.Position=UDim2.fromOffset(8,48)
+_ai.BackgroundTransparency=1
+_ai.ZIndex=2
+_ai.Parent=_Z
+
+local _aj=Instance.new("TextLabel")
+_aj.Size=UDim2.new(1,0,0,18)
+_aj.Position=UDim2.fromOffset(0,0)
+_aj.BackgroundTransparency=1
+_aj.Text="Status: "..(_L.a and "Scanning" or "OFF")
+_aj.TextSize=10
+_aj.TextColor3=_L.a and Color3.fromRGB(100,255,100)or Color3.fromRGB(255,100,100)
+_aj.Font=Enum.Font.Gotham
+_aj.TextXAlignment=Enum.TextXAlignment.Left
+_aj.TextYAlignment=Enum.TextYAlignment.Center
+_aj.ZIndex=2
+_aj.Parent=_ai
+
+local function _ak(label,y,def,cb)
+    local row=Instance.new("Frame")
+    row.Size=UDim2.new(1,0,0,24)
+    row.Position=UDim2.fromOffset(0,y)
+    row.BackgroundTransparency=1
+    row.ZIndex=2
+    row.Parent=_ai
+    local lbl=Instance.new("TextLabel")
+    lbl.Size=UDim2.new(1,-50,1,0)
+    lbl.BackgroundTransparency=1
+    lbl.Text=label
+    lbl.TextSize=10
+    lbl.TextColor3=Color3.fromRGB(220,220,225)
+    lbl.Font=Enum.Font.Gotham
+    lbl.TextXAlignment=Enum.TextXAlignment.Left
+    lbl.TextYAlignment=Enum.TextYAlignment.Center
+    lbl.ZIndex=2
+    lbl.Parent=row
+    local track=Instance.new("TextButton")
+    track.Size=UDim2.fromOffset(30,16)
+    track.Position=UDim2.new(1,-36,0.5,-8)
+    track.BackgroundColor3=def and Color3.fromRGB(0,210,100)or Color3.fromRGB(42,42,46)
+    track.BorderSizePixel=0
+    track.AutoButtonColor=false
+    track.Text=""
+    track.ZIndex=3
+    track.Parent=row
+    local tcorner=Instance.new("UICorner")
+    tcorner.CornerRadius=UDim.new(0,8)
+    tcorner.Parent=track
+    local tstroke=Instance.new("UIStroke")
+    tstroke.Thickness=1.5
+    tstroke.Transparency=0.15
+    tstroke.Color=Color3.fromRGB(255,255,255)
+    tstroke.Parent=track
+    local tgrad=Instance.new("UIGradient")
+    tgrad.Parent=tstroke
+    tgrad.Rotation=0
+    tgrad.Color=ColorSequence.new({ColorSequenceKeypoint.new(0,Color3.fromRGB(255,255,255)),ColorSequenceKeypoint.new(0.25,Color3.fromRGB(0,0,0)),ColorSequenceKeypoint.new(0.5,Color3.fromRGB(255,255,255)),ColorSequenceKeypoint.new(0.75,Color3.fromRGB(0,0,0)),ColorSequenceKeypoint.new(1,Color3.fromRGB(255,255,255))})
+    local pin=Instance.new("Frame")
+    pin.Size=UDim2.fromOffset(10,10)
+    pin.Position=def and UDim2.new(1,-14,0.5,-5)or UDim2.new(0,2,0.5,-5)
+    pin.BackgroundColor3=Color3.fromRGB(255,255,255)
+    pin.BorderSizePixel=0
+    pin.ZIndex=4
+    pin.Parent=track
+    local pcorner=Instance.new("UICorner")
+    pcorner.CornerRadius=UDim.new(0,5)
+    pcorner.Parent=pin
+    local state=def
+    local function toggle()
+        state=not state
+        local t1=_E:Create(track,TweenInfo.new(0.15),{BackgroundColor3=state and Color3.fromRGB(0,210,100)or Color3.fromRGB(42,42,46)})
+        t1:Play()
+        local t2=_E:Create(pin,TweenInfo.new(0.15),{Position=state and UDim2.new(1,-14,0.5,-5)or UDim2.new(0,2,0.5,-5)})
+        t2:Play()
+        if cb then cb(state)end
+    end
+    track.MouseButton1Click:Connect(toggle)
+    return row
+end
+
+_ak("Auto Code",20,_L.a,function(v)
+    _L.a=v
+    _I.a=v
+    _K()
+    _aj.Text="Status: "..(v and "Scanning" or "OFF")
+    _aj.TextColor3=v and Color3.fromRGB(100,255,100)or Color3.fromRGB(255,100,100)
+    if _P.a then _P.a.Text=v and "> scanning..."or "status: OFF"end
+end)
+
+_ak("Auto submit",46,_L.e,function(v)_L.e=v _I.b=v _K()end)
+_ak("Riddle solver",72,_L.m,function(v)_L.m=v _I.e=v _K()end)
+_ak("Retype invalid",98,_L.l,function(v)_L.l=v _I.d=v _K()end)
+
+local _al=Instance.new("Frame")
+_al.Size=UDim2.new(1,0,0,28)
+_al.Position=UDim2.fromOffset(0,126)
+_al.BackgroundTransparency=1
+_al.ZIndex=2
+_al.Parent=_ai
+
+local _am=Instance.new("TextLabel")
+_am.Size=UDim2.new(1,-90,1,0)
+_am.BackgroundTransparency=1
+_am.Text="Submit after"
+_am.TextSize=10
+_am.TextColor3=Color3.fromRGB(220,220,225)
+_am.Font=Enum.Font.Gotham
+_am.TextXAlignment=Enum.TextXAlignment.Left
+_am.TextYAlignment=Enum.TextYAlignment.Center
+_am.ZIndex=2
+_am.Parent=_al
+
+local _an=Instance.new("Frame")
+_an.Size=UDim2.fromOffset(65,22)
+_an.Position=UDim2.new(1,-72,0.5,-11)
+_an.BackgroundColor3=Color3.fromRGB(20,21,24)
+_an.BorderSizePixel=0
+_an.ZIndex=3
+_an.Parent=_al
+
+local _ao=Instance.new("UICorner")
+_ao.CornerRadius=UDim.new(0,5)
+_ao.Parent=_an
+
+local _ap=Instance.new("UIStroke")
+_ap.Color=Color3.fromRGB(255,255,255)
+_ap.Thickness=1.5
+_ap.Transparency=0.15
+_ap.Parent=_an
+
+local _aq=Instance.new("UIGradient")
+_aq.Parent=_ap
+_aq.Rotation=0
+_aq.Color=ColorSequence.new({ColorSequenceKeypoint.new(0,Color3.fromRGB(255,255,255)),ColorSequenceKeypoint.new(0.25,Color3.fromRGB(0,0,0)),ColorSequenceKeypoint.new(0.5,Color3.fromRGB(255,255,255)),ColorSequenceKeypoint.new(0.75,Color3.fromRGB(0,0,0)),ColorSequenceKeypoint.new(1,Color3.fromRGB(255,255,255))})
+
+local _ar=Instance.new("TextButton")
+_ar.Size=UDim2.fromOffset(16,16)
+_ar.Position=UDim2.fromOffset(3,3)
+_ar.BackgroundColor3=Color3.fromRGB(30,31,35)
+_ar.BorderSizePixel=0
+_ar.AutoButtonColor=false
+_ar.Text="-"
+_ar.TextSize=11
+_ar.TextColor3=Color3.fromRGB(255,255,255)
+_ar.Font=Enum.Font.GothamBold
+_ar.ZIndex=4
+_ar.Parent=_an
+
+local _as=Instance.new("UICorner")
+_as.CornerRadius=UDim.new(0,3)
+_as.Parent=_ar
+
+local _at=Instance.new("TextLabel")
+_at.Size=UDim2.fromOffset(20,16)
+_at.Position=UDim2.fromOffset(22,3)
+_at.BackgroundTransparency=1
+_at.Text=tostring(_L.f)
+_at.TextSize=11
+_at.TextColor3=Color3.fromRGB(255,255,255)
+_at.Font=Enum.Font.GothamBold
+_at.TextXAlignment=Enum.TextXAlignment.Center
+_at.TextYAlignment=Enum.TextYAlignment.Center
+_at.ZIndex=4
+_at.Parent=_an
+
+local _au=Instance.new("TextButton")
+_au.Size=UDim2.fromOffset(16,16)
+_au.Position=UDim2.fromOffset(46,3)
+_au.BackgroundColor3=Color3.fromRGB(30,31,35)
+_au.BorderSizePixel=0
+_au.AutoButtonColor=false
+_au.Text="+"
+_au.TextSize=11
+_au.TextColor3=Color3.fromRGB(255,255,255)
+_au.Font=Enum.Font.GothamBold
+_au.ZIndex=4
+_au.Parent=_an
+
+local _av=Instance.new("UICorner")
+_av.CornerRadius=UDim.new(0,3)
+_av.Parent=_au
+
+local function _aw()
+    _at.Text=tostring(_L.f)
+    _I.c=_L.f
+    _K()
+end
+
+_ar.MouseButton1Click:Connect(function()
+    _L.f=_3x.max(1,_L.f-1)
+    _aw()
+end)
+_au.MouseButton1Click:Connect(function()
+    _L.f=_L.f+1
+    _aw()
+end)
+
+local _ax=Instance.new("ScrollingFrame")
+_ax.Size=UDim2.new(1,-16,0,100)
+_ax.Position=UDim2.fromOffset(8,238)
+_ax.BackgroundColor3=Color3.fromRGB(5,5,7)
+_ax.BorderSizePixel=0
+_ax.ClipsDescendants=true
+_ax.Active=true
+_ax.ScrollingEnabled=true
+_ax.ScrollingDirection=Enum.ScrollingDirection.Y
+_ax.CanvasSize=UDim2.new(0,0,0,0)
+_ax.ScrollBarThickness=4
+_ax.ScrollBarImageColor3=Color3.fromRGB(120,120,130)
+_ax.ZIndex=2
+_ax.Parent=_Z
+
+local _ay=Instance.new("UICorner")
+_ay.CornerRadius=UDim.new(0,6)
+_ay.Parent=_ax
+
+local _az=Instance.new("UIStroke")
+_az.Color=Color3.fromRGB(255,255,255)
+_az.Thickness=1.5
+_az.Transparency=0.15
+_az.Parent=_ax
+
+local _aA=Instance.new("UIGradient")
+_aA.Parent=_az
+_aA.Rotation=0
+_aA.Color=ColorSequence.new({ColorSequenceKeypoint.new(0,Color3.fromRGB(255,255,255)),ColorSequenceKeypoint.new(0.25,Color3.fromRGB(0,0,0)),ColorSequenceKeypoint.new(0.5,Color3.fromRGB(255,255,255)),ColorSequenceKeypoint.new(0.75,Color3.fromRGB(0,0,0)),ColorSequenceKeypoint.new(1,Color3.fromRGB(255,255,255))})
+
+_P.a=Instance.new("TextLabel")
+_P.a.Size=UDim2.new(1,-8,0,80)
+_P.a.AutomaticSize=Enum.AutomaticSize.Y
+_P.a.Position=UDim2.fromOffset(4,4)
+_P.a.BackgroundTransparency=1
+_P.a.Text=_L.a and "> scanning..."or "status: OFF"
+_P.a.TextSize=10
+_P.a.Font=Enum.Font.Code
+_P.a.TextColor3=_L.a and Color3.fromRGB(100,255,100)or Color3.fromRGB(255,100,100)
+_P.a.TextXAlignment=Enum.TextXAlignment.Left
+_P.a.TextYAlignment=Enum.TextYAlignment.Top
+_P.a.TextWrapped=true
+_P.a.ZIndex=3
+_P.a.Parent=_ax
+
+do
+    local _aB=false
+    local _aC,_aD,_aE
+    local function _aF(input)
+        local _aG=input.Position-_aD
+        _Z.Position=UDim2.new(_aE.X.Scale,_aE.X.Offset+_aG.X,_aE.Y.Scale,_aE.Y.Offset+_aG.Y)
+    end
+    _ad.InputBegan:Connect(function(input)
+        if input.UserInputType==Enum.UserInputType.MouseButton1 or input.UserInputType==Enum.UserInputType.Touch then
+            _aB=true
+            _aD=input.Position
+            _aE=_Z.Position
+            input.Changed:Connect(function()
+                if input.UserInputState==Enum.UserInputState.End then _aB=false end
+            end)
+        end
+    end)
+    _ad.InputChanged:Connect(function(input)
+        if input.UserInputType==Enum.UserInputType.MouseMovement or input.UserInputType==Enum.UserInputType.Touch then _aC=input end
+    end)
+    _D.InputChanged:Connect(function(input)
+        if input==_aC and _aB then _aF(input)end
+    end)
+end
+
+_P.b=function(msg,col)
+    if not _P.a or not _L.a then return end
+    if msg==_L.s then return end
+    _L.s=msg
+    col=col or Color3.fromRGB(120,120,130)
+    if _P.a.Text==""then _P.a.Text=msg else _P.a.Text=_P.a.Text.."\n"..msg end
+end
+
+local function _aH()_L.g={}end
+
+local function _aI()
+    if _L.i then pcall(function()_L.i:Disconnect()end)end
+    if _L.j then pcall(function()_L.j:Disconnect()end)end
+    for _,conn in ipairs(_L.k)do pcall(function()conn:Disconnect()end)end
+    _L.i=nil
+    _L.j=nil
+    _L.k={}
+    _L.h=nil
+end
+
+local function _aJ(box)
+    if not box or _L.h==box then return end
+    _aI()
+    _L.h=box
+    if box.Text~=""then _L.n=box.Text end
+    _L.i=box:GetPropertyChangedSignal("Text"):Connect(function()
+        if box.Text==""then _aH()else _L.n=box.Text end
+    end)
+    _L.j=box.AncestryChanged:Connect(function(_,parent)
+        if not parent then _aH()_aI()end
+    end)
+end
+
+_D.TextBoxFocused:Connect(function(box)
+    if box:IsDescendantOf(_Y)then return end
+    if box~=_X()then return end
+    _L.c=box
+    _L.d=box
+    _aJ(box)
+    if _L.a then _P.b("Ready",Color3.fromRGB(70,210,100))end
+end)
+
+_D.TextBoxFocusReleased:Connect(function(box)
+    if box:IsDescendantOf(_Y)then return end
+    local cb=_X()
+    if box~=cb and box~=_L.d then return end
+    if _L.l and (box==cb or box==_L.d)then
+        local text=box.Text~=""and box.Text or _L.n
+        if _L.o and os.clock()<=_L.q then return end
+        _L.r=_L.r+1
+        local token=_L.r
+        _L.o=text
+        _L.p=box
+        _L.q=os.clock()+8
+        _6x(8,function()if token==_L.r then _L.o=nil _L.p=nil _L.q=0 end end)
+    end
+    if _L.c==box then
+        _L.c=nil
+        if _L.a then _P.b((_L.d and _L.d.Parent)and"Ready"or"Click code box first",(_L.d and _L.d.Parent)and Color3.fromRGB(70,210,100)or Color3.fromRGB(120,120,130))end
+    end
+end)
+
+local function _aK(box,text)
+    if not _L.l or not text or text==""then return false end
+    _C.Heartbeat:Wait()
+    local cb=_X()or box
+    if not cb or not _R(cb)then return false end
+    local ok=pcall(function()cb.Text=text end)
+    if ok then _L.d=cb _aJ(cb)end
+    return ok
+end
+
+local function _aL(text,obj)
+    if not _L.l or not _L.o then return end
+    if os.clock()>_L.q then _L.o=nil _L.p=nil _L.q=0 return end
+    if obj and obj:IsDescendantOf(_Y)then return end
+    local lower=tostring(text or""):lower()
+    local rej=lower:find("invalid code",1,true)or lower:find("code is invalid",1,true)or lower:find("expired",1,true)or lower:find("already redeemed",1,true)or lower:find("already used",1,true)or lower:find("doesn't exist",1,true)or lower:find("does not exist",1,true)or lower:find("not found",1,true)or lower:find("rejected",1,true)
+    if not rej then return end
+    local pt=_L.o
+    local pb=_L.p
+    local rs=_aK(pb,pt)
+    _L.o=nil _L.p=nil _L.q=0
+    if rs then _P.b("Invalid - repasted: "..pt,Color3.fromRGB(190,190,196))end
+end
+
+local function _aM(text)
+    if not text or text==""then return end
+    if not _L.a then return end
+    if _L.h and not _R(_L.h)then _aH()_aI()end
+    local box=_X()
+    _L.g[#_L.g+1]=text
+    local comb=_2x.concat(_L.g)
+    local cnt=#_L.g
+    if box then
+        _L.d=box
+        _aJ(box)
+        local fcs=_D:GetFocusedTextBox()==box
+        box.Text=comb
+        if fcs then pcall(function()local p=#comb+1 box.CursorPosition=p box.SelectionStart=p end)end
+    else _P.b("Captured; opening UI...",Color3.fromRGB(190,190,196))end
+    _P.b("Pasted "..tostring(cnt).."/"..tostring(_L.f),Color3.fromRGB(70,210,100))
+    if cnt>=_L.f then
+        _L.g={}
+        if _L.e then
+            local ok,msg=_W(comb)
+            if ok then _P.b("Redeemed: "..comb,Color3.fromRGB(70,210,100))
+            else
+                local rs=_aK(box,comb)
+                if rs then _P.b("Invalid - repasted: "..comb,Color3.fromRGB(190,190,196))
+                else _P.b("Failed: "..tostring(msg),Color3.fromRGB(255,70,70))end
+            end
+        end
+    end
+end
+
+local function _aN(obj)
+    if not(obj:IsA("TextLabel")or obj:IsA("TextButton"))then return end
+    _aL(obj.Text or"",obj)
+    obj:GetPropertyChangedSignal("Text"):Connect(function()_aL(obj.Text or"",obj)end)
+end
+
+for _,obj in ipairs(_G.b:GetDescendants())do _aN(obj)end
+_G.b.DescendantAdded:Connect(function(obj)_5x(0.04)_aN(obj)end)
+
+if getgenv then
+    getgenv().StopAura=function()
+        if _aV then pcall(function()_aV:Disconnect()end)_aV=nil end
+        if getgenv().LevithonCodeRedeemerNotifyConnection then           pcall(function()getgenv().LevithonCodeRedeemerNotifyConnection:Disconnect()end)         getgenv().LevithonCodeRedeemerNotifyConnection=nil
+        end
+        if _Y then _Y:Destroy()end
+    end
+end
